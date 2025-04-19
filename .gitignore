@@ -1,0 +1,5 @@
+#ignore data files due to size constraint
+data/raw/
+data/clean/
+data/**/*.json
+data/**/*.tar
