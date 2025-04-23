@@ -7,3 +7,5 @@ test2:
 cli:
 	docker compose run --rm backend
 
+sql:
+	psql -U craivings_user -d db_craivings
