@@ -1,5 +1,6 @@
 #ignore data files due to size constraint
-data/raw/
-data/clean/
+code/data/raw/
+code/data/clean/
 data/**/*.json
 data/**/*.tar
+requirements.txt
