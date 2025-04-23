@@ -8,7 +8,8 @@ def connect():
             user="craivings_user",
             password="password",
             host="localhost",
-            port="5432"
+            port="5432",
+            connect_timeout=10
         )
         return connection
     except Exception as e:
