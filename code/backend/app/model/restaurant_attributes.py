@@ -71,4 +71,3 @@ class RestaurantAttributes:
         self.restaurant_counter_services = restaurant_counter_services
         self.ages_allowed = ages_allowed
         self.dietary_restrictions = dietary_restrictions
-        self.dynamic_attributes = dynamic_attributes
