@@ -1,4 +1,4 @@
-class RestaurantCategory:
+class Hours:
     def __init__(self, id, day, start_time, end_time):
         self.id = id
         self.day = day

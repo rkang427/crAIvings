@@ -23,6 +23,9 @@ DROP TABLE IF EXISTS restaurant_ambience CASCADE;
 DROP TABLE IF EXISTS restaurant_parking CASCADE;
 DROP TABLE IF EXISTS restaurant_good_for_meal CASCADE;
 DROP TABLE IF EXISTS restaurant_dynamic_attributes CASCADE;
+DROP TABLE IF EXISTS restaurant_best_nights CASCADE;
+DROP TABLE IF EXISTS restaurant_music CASCADE;
+DROP TABLE IF EXISTS restaurant_dietary CASCADE;
 CREATE TABLE restaurant(
     id VARCHAR PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
@@ -55,7 +58,6 @@ CREATE TABLE restaurant_attributes(
     business_id VARCHAR PRIMARY KEY REFERENCES restaurant(id),
     by_appointment_only BOOLEAN,
     accept_credit_cards BOOLEAN,
-    bike_parking BOOLEAN,
     restaurant_price_range VARCHAR,
     coat_check BOOLEAN,
     take_out BOOLEAN,
@@ -74,10 +76,8 @@ CREATE TABLE restaurant_attributes(
     restaurant_table_service BOOLEAN,
     drive_thru BOOLEAN,
     noise_level VARCHAR,
-    good_for_meal VARCHAR,
     accepts_bitcoin BOOLEAN,
     smoking BOOLEAN,
-    music BOOLEAN,
     good_for_dancing BOOLEAN,
     accepts_insurance BOOLEAN,
     best_nights VARCHAR,
@@ -87,8 +87,7 @@ CREATE TABLE restaurant_attributes(
     hair_specializes_in VARCHAR,
     open_24_hours BOOLEAN,
     restaurant_counter_services BOOLEAN,
-    ages_allowed VARCHAR,
-    dietary_restrictions VARCHAR
+    ages_allowed VARCHAR
 );
 
 CREATE TABLE restaurant_best_nights(
@@ -97,10 +96,21 @@ CREATE TABLE restaurant_best_nights(
     PRIMARY KEY (business_id, day_of_week)
 );
 
+CREATE TABLE restaurant_music(
+    business_id VARCHAR REFERENCES restaurant(id),
+    music VARCHAR,
+    PRIMARY KEY (business_id, music)
+);
+
+CREATE TABLE restaurant_dietary(
+    business_id VARCHAR REFERENCES restaurant(id),
+    dietary VARCHAR,
+    PRIMARY KEY (business_id, dietary)
+);
+
 CREATE TABLE restaurant_parking (
     business_id VARCHAR REFERENCES restaurant(id),
     parking_type VARCHAR,
-    available BOOLEAN,
     PRIMARY KEY (business_id, parking_type)
 );
 
