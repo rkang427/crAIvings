@@ -88,8 +88,7 @@ CREATE TABLE restaurant_attributes(
     open_24_hours BOOLEAN,
     restaurant_counter_services BOOLEAN,
     ages_allowed VARCHAR,
-    dietary_restrictions VARCHAR,
-    dynamic_attributes JSONB
+    dietary_restrictions VARCHAR
 );
 
 CREATE TABLE restaurant_best_nights(

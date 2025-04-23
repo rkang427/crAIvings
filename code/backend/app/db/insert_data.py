@@ -2,7 +2,7 @@ import json
 
 import psycopg2
 category_keywords = []
-with open("food_categories.txt", "r") as f:
+with open("categories/food_categories.txt", "r") as f:
     for a in f.readlines():
         category_keywords.append(a.strip())
 

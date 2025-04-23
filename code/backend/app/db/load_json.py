@@ -26,6 +26,9 @@ from code.backend.app.db.insert_data import *
 # quit and then connect to db
 # psql -U craivings_user -d db_craivings
 
+
+path_business = "../../../data/raw/yelp_dataset/yelp_academic_dataset_business.json"
+#TBD
 path_checkin = "../../../data/raw/yelp_dataset/yelp_academic_dataset_checkin.json"
 path_business = "../../../data/raw/yelp_dataset/yelp_academic_dataset_business.json"
 path_review = "../../../data/raw/yelp_dataset/yelp_academic_dataset_review.json"
