@@ -3,13 +3,16 @@
 
 
 -- db_craivings=> \dt
---                     List of relations
---  Schema |         Name          | Type  |     Owner
--- --------+-----------------------+-------+----------------
---  public | restaurant            | table | craivings_user
---  public | restaurant_attributes | table | craivings_user
---  public | restaurant_categories | table | craivings_user
---  public | restaurant_hours      | table | craivings_user
+--                         List of relations
+--  Schema |             Name              | Type  |     Owner
+-- --------+-------------------------------+-------+----------------
+--  public | restaurant                    | table | craivings_user
+--  public | restaurant_ambience           | table | craivings_user
+--  public | restaurant_attributes         | table | craivings_user
+--  public | restaurant_best_nights        | table | craivings_user
+--  public | restaurant_categories         | table | craivings_user
+--  public | restaurant_dynamic_attributes | table | craivings_user
+
 
 --in case pre-existing
 DROP TABLE IF EXISTS restaurant_attributes CASCADE;
