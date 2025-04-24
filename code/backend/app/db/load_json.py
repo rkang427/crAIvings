@@ -28,7 +28,8 @@ from code.backend.app.db.insert_data import *
 
 
 path_business = "../../../data/raw/yelp_dataset/yelp_academic_dataset_business.json"
-#TBD
+
+#TBD -- used for graph analysis/popularity
 path_checkin = "../../../data/raw/yelp_dataset/yelp_academic_dataset_checkin.json"
 path_business = "../../../data/raw/yelp_dataset/yelp_academic_dataset_business.json"
 path_review = "../../../data/raw/yelp_dataset/yelp_academic_dataset_review.json"

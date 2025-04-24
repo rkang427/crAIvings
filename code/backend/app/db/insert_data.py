@@ -1,18 +1,22 @@
 import json
 import ast
 from datetime import datetime
-
+from rapidfuzz import fuzz
 category_keywords = []
+MATCH_THRESHOLD = 50
 with open("categories/food_categories.txt", "r") as f:
     for a in f.readlines():
-        category_keywords.append(a.strip())
+        category_keywords.append(a.strip().lower())
+
 
 def create_business_db(connection, data):
     for a in data:
-        categories = a.get("categories")
-        if not categories:
+        categories = [a.get("categories")]
+        if not categories or categories[0] is None:
             continue
-        if any(keyword in categories for keyword in category_keywords):
+        categories = [a.lower() for a in categories]
+        category_keywords_normalized = [keyword.strip().lower() for keyword in category_keywords]
+        if any(fuzz.ratio(keyword, category) >= MATCH_THRESHOLD for category in categories for keyword in category_keywords_normalized):
             with connection.cursor() as cursor:
                 insert_core_business(cursor, [a])
                 insert_category_business(cursor, a['business_id'], categories)
@@ -26,12 +30,12 @@ def create_business_db(connection, data):
                 insert_dietary(cursor, a['business_id'], a)
                 insert_dynamic_attributes(cursor, a['business_id'], a.get("attributes"))
     connection.commit()
-
+    #TODO: maybe change is_open into a Open/Closed VARCHAR type
 def insert_core_business(cursor, data):
     template = [(a['business_id'], a['name'], a['address'],
                     a['city'], a['state'], a['postal_code'],
                     a['latitude'], a['longitude'], a['stars'],
-                    a['review_count'], a['is_open']) for a in data]
+                    a['review_count'], 'open' if a['is_open'] == 1 or a['is_open'] == True else 'closed') for a in data]
     cursor.executemany("INSERT INTO restaurant(id, name, address,"
                            "city, state, postal_code, latitude, longitude,"
                            "stars, review_count,"
@@ -39,7 +43,9 @@ def insert_core_business(cursor, data):
 
 def insert_category_business(cursor, business_id, categories):
     if isinstance(categories, str):
-        categories = categories.split(",")
+        categories = [category.strip() for category in categories.split(",")]
+    else:
+        categories = [category.strip() for category in categories[0].split(",")]
     template = [(business_id, category) for category in categories]
     cursor.executemany("""
         INSERT INTO restaurant_categories(business_id, category)
@@ -171,7 +177,7 @@ def insert_parking_data(cursor, business_id, data):
         if bike and bike == "True":
             cursor.execute("""
                 INSERT INTO restaurant_parking(business_id, parking_type)
-                VALUES (%s, 'Bike')
+                VALUES (%s, 'bike')
             """, (business_id,))
     except Exception as e:
         return "Error in parking: {e}", e
