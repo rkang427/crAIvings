@@ -1,7 +1,21 @@
 import psycopg2
-from psycopg2 import sql
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def connect():
+    try:
+        url = os.getenv("DATABASE_URL")
+        print("Connecting to:", url)
+        connection = psycopg2.connect(url)
+        print("connection worked!")
+        return connection
+    except Exception as e:
+        print("connection failed due to ", e)
+        return None
+
+def connect_local():
     try:
         connection = psycopg2.connect(
             dbname="db_craivings",

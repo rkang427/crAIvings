@@ -1,56 +1,16 @@
-import json
 import ast
+import json
 from datetime import datetime
 from rapidfuzz import fuzz
+import os
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+CATEGORY_FILE_PATH = os.path.join(BASE_DIR, "categories", "food_categories.txt")
+
 category_keywords = []
 MATCH_THRESHOLD = 50
-with open("categories/food_categories.txt", "r") as f:
-    for a in f.readlines():
-        category_keywords.append(a.strip().lower())
-
-
-def create_business_db(connection, data):
-    for a in data:
-        categories = [a.get("categories")]
-        if not categories or categories[0] is None:
-            continue
-        categories = [a.lower() for a in categories]
-        category_keywords_normalized = [keyword.strip().lower() for keyword in category_keywords]
-        if any(fuzz.ratio(keyword, category) >= MATCH_THRESHOLD for category in categories for keyword in category_keywords_normalized):
-            with connection.cursor() as cursor:
-                insert_core_business(cursor, [a])
-                insert_category_business(cursor, a['business_id'], categories)
-                insert_attributes_business(cursor, a['business_id'], a['attributes'])
-                insert_parking_data(cursor, a['business_id'], a)
-                insert_ambience_data(cursor, a['business_id'], a)
-                insert_best_nights(cursor, a['business_id'], a)
-                insert_good_for_meal(cursor, a['business_id'], a)
-                insert_hours_data(cursor, a['business_id'], a)
-                insert_music_data(cursor, a['business_id'], a)
-                insert_dietary(cursor, a['business_id'], a)
-                insert_dynamic_attributes(cursor, a['business_id'], a.get("attributes"))
-    connection.commit()
-    #TODO: maybe change is_open into a Open/Closed VARCHAR type
-def insert_core_business(cursor, data):
-    template = [(a['business_id'], a['name'], a['address'],
-                    a['city'], a['state'], a['postal_code'],
-                    a['latitude'], a['longitude'], a['stars'],
-                    a['review_count'], 'open' if a['is_open'] == 1 or a['is_open'] == True else 'closed') for a in data]
-    cursor.executemany("INSERT INTO restaurant(id, name, address,"
-                           "city, state, postal_code, latitude, longitude,"
-                           "stars, review_count,"
-                           " is_open ) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)", template)
-
-def insert_category_business(cursor, business_id, categories):
-    if isinstance(categories, str):
-        categories = [category.strip() for category in categories.split(",")]
-    else:
-        categories = [category.strip() for category in categories[0].split(",")]
-    template = [(business_id, category) for category in categories]
-    cursor.executemany("""
-        INSERT INTO restaurant_categories(business_id, category)
-        VALUES (%s, %s)
-    """, template)
+with open(CATEGORY_FILE_PATH, "r") as f:
+    for line in f.readlines():
+        category_keywords.append(line.strip().lower())
 
 def str_to_bool(val):
     if isinstance(val, bool):
@@ -67,6 +27,69 @@ def str_to_str(val):
         return ast.literal_eval(val) if isinstance(val, str) else val
     except (ValueError, SyntaxError):
         return val
+
+from rapidfuzz import process
+
+def get_matching_category(categories, threshold=50):
+    for category in categories:
+        match = process.extractOne(category, category_keywords, score_cutoff=threshold)
+        if match:
+            return True
+    return False
+
+def create_business_db(connection, data):
+    try:
+        with connection.cursor() as cursor:
+            for business in data:
+                categories = [business.get("categories")]
+                if not categories or categories[0] is None:
+                    continue
+
+                categories = [a.lower() for a in categories]
+                if get_matching_category(categories):
+                    insert_core_business(cursor, [business])
+                    insert_category_business(cursor, business['business_id'], categories)
+                    insert_attributes_business(cursor, business['business_id'], business['attributes'])
+                    insert_parking_data(cursor, business['business_id'], business)
+                    insert_ambience_data(cursor, business['business_id'], business)
+                    insert_best_nights(cursor, business['business_id'], business)
+                    insert_good_for_meal(cursor, business['business_id'], business)
+                    insert_hours_data(cursor, business['business_id'], business)
+                    insert_music_data(cursor, business['business_id'], business)
+                    insert_dietary(cursor, business['business_id'], business)
+                    insert_dynamic_attributes(cursor, business['business_id'], business.get("attributes"))
+        connection.commit()
+    except Exception as e:
+        print(f"Error inserting data: {e}")
+        connection.rollback()
+
+
+def insert_core_business(cursor, data):
+
+    template = [
+        (business['business_id'], business['name'], business['address'],
+         business['city'], business['state'], business['postal_code'],
+         business['latitude'], business['longitude'], business['stars'],
+         business['review_count'], 'open' if business['is_open'] == 1 else 'closed')
+        for business in data
+    ]
+    print([str(type(a))+ ", " + str(a) for a in template])
+
+    cursor.executemany("""
+        INSERT INTO restaurant(id, name, address, city, state, postal_code, latitude, longitude, stars, review_count, is_open)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+    """, template)
+
+def insert_category_business(cursor, business_id, categories):
+    if isinstance(categories, str):
+        categories = [category.strip() for category in categories.split(",")]
+    else:
+        categories = [category.strip() for category in categories[0].split(",")]
+    template = [(business_id, category) for category in categories]
+    cursor.executemany("""
+        INSERT INTO restaurant_categories(business_id, category)
+        VALUES (%s, %s)
+    """, template)
 
 def insert_attributes_business(cursor, business_id, data):
     if not data or data == "None" or data == "[]":
@@ -156,7 +179,6 @@ def insert_music_data(cursor, business_id, data):
             VALUES (%s, %s)
         """, template)
 
-
 def insert_parking_data(cursor, business_id, data):
     if not data["attributes"] or data["attributes"] == "None":
         return
@@ -180,7 +202,7 @@ def insert_parking_data(cursor, business_id, data):
                 VALUES (%s, 'bike')
             """, (business_id,))
     except Exception as e:
-        return "Error in parking: {e}", e
+        return f"Error in parking: {e}", e
 
 def insert_best_nights(cursor, business_id, data):
     if not data["attributes"] or data["attributes"] == "None":
@@ -213,54 +235,59 @@ def insert_hours_data(cursor, business_id, data):
     if not hours:
         return
     template = []
-    for day, time_range in hours.items():
-        open_time, close_time = parse_hours(time_range)
+    for day, times in hours.items():
+        open_time, close_time = parse_hours(times)
         if open_time and close_time:
             template.append((business_id, day, open_time, close_time))
-    if template:
-        cursor.executemany("""
-            INSERT INTO restaurant_hours(business_id, day_of_week, open_time, close_time)
-            VALUES (%s, %s, %s, %s)
-        """, template)
-
-def insert_good_for_meal(cursor, business_id, data):
-    attributes = data.get("attributes")
-    if not attributes or attributes == "None":
-        return
-    meals = attributes.get("GoodForMeal")
-    if not meals or meals == "None":
-        return
-    meals = ast.literal_eval(meals) if isinstance(meals, str) else meals
-    template = [(business_id, meal) for meal, is_true in meals.items() if is_true]
-    if template:
-        cursor.executemany("""
-                INSERT INTO restaurant_good_for_meal(business_id, occasion)
-                VALUES (%s, %s)
-            """, template)
-
-def insert_dietary(cursor, business_id, data):
-    attributes = data.get("attributes")
-    if not attributes or attributes == "None":
-        return
-    dietary = attributes.get("DietaryRestrictions")
-
-    if not dietary or dietary == "None":
-        return
-    diet = ast.literal_eval(dietary) if isinstance(dietary, str) else dietary
-    template = [(business_id, d) for d, is_true in diet.items() if is_true == True]
     cursor.executemany("""
-                    INSERT INTO restaurant_dietary(business_id, dietary)
-                    VALUES (%s, %s)
-                """, template)
+        INSERT INTO restaurant_hours(business_id, day_of_week, open_time, close_time)
+        VALUES (%s, %s, %s, %s)
+    """, template)
 
 def insert_dynamic_attributes(cursor, business_id, attributes):
     if not attributes or attributes == "None":
         return
-    template = [
-        (business_id, key, json.dumps(ast.literal_eval(value) if isinstance(value, str) else value))
-        for key, value in attributes.items()
-    ]
+    template = []
+    if isinstance(attributes, str):
+        attributes = ast.literal_eval(attributes)
+    for attribute, value in attributes.items():
+        if isinstance(value, bool):
+            template.append((business_id, attribute, value))
     cursor.executemany("""
-        INSERT INTO restaurant_dynamic_attributes(business_id, attribute_key, attribute_value)
+        INSERT INTO restaurant_dynamic_attributes(business_id, attribute, value)
         VALUES (%s, %s, %s)
     """, template)
+
+def insert_good_for_meal(cursor, business_id, data):
+    if not data["attributes"] or data["attributes"] == "None":
+        return
+    good_for_meal = data["attributes"].get("GoodForMeal")
+    if not good_for_meal or good_for_meal == "None":
+        return
+    pk = ast.literal_eval(good_for_meal) if isinstance(good_for_meal, str) else good_for_meal
+    if isinstance(pk, dict):
+        template = [
+            (business_id, meal)
+            for meal, is_true in pk.items() if is_true
+        ]
+        cursor.executemany("""
+            INSERT INTO restaurant_good_for_meal(business_id, occasion)
+            VALUES (%s, %s)
+        """, template)
+
+def insert_dietary(cursor, business_id, data):
+    if not data["attributes"] or data["attributes"] == "None":
+        return
+    dietary = data["attributes"].get("DietaryRestrictions")
+    if not dietary or dietary == "None":
+        return
+    pk = ast.literal_eval(dietary) if isinstance(dietary, str) else dietary
+    if isinstance(pk, dict):
+        template = [
+            (business_id, restriction)
+            for restriction, is_true in pk.items() if is_true
+        ]
+        cursor.executemany("""
+            INSERT INTO restaurant_dietary(business_id, dietary)
+            VALUES (%s, %s)
+        """, template)
