@@ -95,7 +95,6 @@ CREATE TABLE restaurant_attributes(
     byob BOOLEAN,
     corkage BOOLEAN,
     byob_corkage BOOLEAN,
-    hair_specializes_in TEXT,
     open_24_hours BOOLEAN,
     restaurant_counter_services BOOLEAN,
     search_vector tsvector,

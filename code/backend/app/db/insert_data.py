@@ -73,7 +73,7 @@ def insert_core_business(cursor, data):
          business['review_count'], 'open' if business['is_open'] == 1 else 'closed')
         for business in data
     ]
-    print([str(type(a))+ ", " + str(a) for a in template])
+
 
     cursor.executemany("""
         INSERT INTO restaurant(id, name, address, city, state, postal_code, latitude, longitude, stars, review_count, is_open)
@@ -86,6 +86,7 @@ def insert_category_business(cursor, business_id, categories):
     else:
         categories = [category.strip() for category in categories[0].split(",")]
     template = [(business_id, category) for category in categories]
+
     cursor.executemany("""
         INSERT INTO restaurant_categories(business_id, category)
         VALUES (%s, %s)
@@ -93,6 +94,8 @@ def insert_category_business(cursor, business_id, categories):
 
 def insert_attributes_business(cursor, business_id, data):
     if not data or data == "None" or data == "[]":
+        return
+    if data.get('HairSpecializesIn') is not None:
         return
     template = (
         business_id,
@@ -123,7 +126,6 @@ def insert_attributes_business(cursor, business_id, data):
         str_to_bool(data.get('BYOB')),
         str_to_bool(data.get('Corkage')),
         str_to_bool(data.get('BYOBCorkage')),
-        str_to_str(data.get('HairSpecializesIn')),
         str_to_bool(data.get('Open24Hours')),
         str_to_bool(data.get('RestaurantsCounterService')),
         str_to_str(data.get('AgesAllowed'))
@@ -138,12 +140,13 @@ def insert_attributes_business(cursor, business_id, data):
                                           restaurant_table_service, drive_thru, noise_level,
                                           accepts_bitcoin, smoking,
                                           good_for_dancing, accepts_insurance,
-                                          byob, corkage, byob_corkage, hair_specializes_in,
+                                          byob, corkage, byob_corkage,
                                           open_24_hours, restaurant_counter_services, ages_allowed
                                           )
         VALUES ( %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, 
-                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """, [template])
+
 
 def insert_ambience_data(cursor, business_id, data):
     if not data["attributes"] or data["attributes"] == "None":
