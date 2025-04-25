@@ -49,7 +49,8 @@
 #         insert_data_into_db(business)
 import json
 import os
-from backend.app.db.connection import connect
+
+from backend.app.db.connection import connect_local
 from backend.app.db.insert_data import create_business_db
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))
@@ -59,7 +60,7 @@ def load_and_insert_business_data():
     with open(BUSINESS_JSON_PATH, "r") as file:
         data = [json.loads(line) for line in file]
 
-    connection = connect()
+    connection = connect_local()
     if connection:
         create_business_db(connection, data)
         connection.close()

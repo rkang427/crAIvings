@@ -67,12 +67,20 @@ def create_business_db(connection, data):
 def insert_core_business(cursor, data):
 
     template = [
-        (business['business_id'], business['name'], business['address'],
-         business['city'], business['state'], business['postal_code'],
-         business['latitude'], business['longitude'], business['stars'],
-         business['review_count'], 'open' if business['is_open'] == 1 else 'closed')
+        (business['business_id'],
+         business['name'],
+         business['address'],
+         business['city'],
+         business['state'],
+         business['postal_code'],
+         business['latitude'],
+         business['longitude'],
+         business['stars'],
+         business['review_count'],
+         'open' if business['is_open'] == 1 else 'closed')
         for business in data
     ]
+    print(template)
 
 
     cursor.executemany("""
@@ -90,6 +98,7 @@ def insert_category_business(cursor, business_id, categories):
     cursor.executemany("""
         INSERT INTO restaurant_categories(business_id, category)
         VALUES (%s, %s)
+        ON CONFLICT (business_id, category) DO NOTHING
     """, template)
 
 def insert_attributes_business(cursor, business_id, data):
@@ -99,37 +108,38 @@ def insert_attributes_business(cursor, business_id, data):
         return
     template = (
         business_id,
-        str_to_bool(data.get('ByAppointmentOnly')),
-        str_to_bool(data.get('BusinessAcceptsCreditCards')),
-        str_to_str(data.get('RestaurantsPriceRange2')),
-        str_to_bool(data.get('CoatCheck')),
-        str_to_bool(data.get('RestaurantsTakeOut')),
-        str_to_bool(data.get('RestaurantsDelivery')),
-        str_to_bool(data.get('Caters')),
-        str_to_str(data.get('WiFi')),
-        str_to_bool(data.get('WheelchairAccessible')),
-        str_to_bool(data.get('HappyHour')),
-        str_to_bool(data.get('OutdoorSeating')),
-        str_to_bool(data.get('HasTV')),
-        str_to_bool(data.get('RestaurantsReservations')),
-        str_to_bool(data.get('DogsAllowed')),
-        str_to_str(data.get('Alcohol')),
-        str_to_bool(data.get('GoodForKids')),
-        str_to_str(data.get('RestaurantsAttire')),
-        str_to_bool(data.get('RestaurantsTableService')),
-        str_to_bool(data.get('DriveThru')),
-        str_to_str(data.get('NoiseLevel')),
-        str_to_bool(data.get('BusinessAcceptsBitcoin')),
-        str_to_bool(data.get('Smoking')),
-        str_to_bool(data.get('GoodForDancing')),
-        str_to_bool(data.get('AcceptsInsurance')),
-        str_to_bool(data.get('BYOB')),
-        str_to_bool(data.get('Corkage')),
-        str_to_bool(data.get('BYOBCorkage')),
-        str_to_bool(data.get('Open24Hours')),
-        str_to_bool(data.get('RestaurantsCounterService')),
-        str_to_str(data.get('AgesAllowed'))
+        bool(data.get('ByAppointmentOnly')),
+        bool(data.get('BusinessAcceptsCreditCards')),
+        bool(data.get('RestaurantsPriceRange2')),
+        bool(data.get('CoatCheck')),
+        bool(data.get('RestaurantsTakeOut')),
+        bool(data.get('RestaurantsDelivery')),
+        bool(data.get('Caters')),
+        data.get('WiFi'),
+        bool(data.get('WheelchairAccessible')),
+        bool(data.get('HappyHour')),
+        bool(data.get('OutdoorSeating')),
+        bool(data.get('HasTV')),
+        bool(data.get('RestaurantsReservations')),
+        bool(data.get('DogsAllowed')),
+        data.get('Alcohol'),
+        bool(data.get('GoodForKids')),
+        data.get('RestaurantsAttire'),
+        bool(data.get('RestaurantsTableService')),
+        bool(data.get('DriveThru')),
+        data.get('NoiseLevel'),
+        bool(data.get('BusinessAcceptsBitcoin')),
+        bool(data.get('Smoking')),
+        bool(data.get('GoodForDancing')),
+        bool(data.get('AcceptsInsurance')),
+        bool(data.get('BYOB')),
+        bool(data.get('Corkage')),
+        bool(data.get('BYOBCorkage')),
+        bool(data.get('Open24Hours')),
+        bool(data.get('RestaurantsCounterService')),
+        data.get('AgesAllowed')
     )
+    print(template)
     cursor.executemany("""
         INSERT INTO restaurant_attributes(business_id,
                                           by_appointment_only, accept_credit_cards,

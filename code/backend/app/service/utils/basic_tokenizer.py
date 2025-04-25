@@ -11,7 +11,6 @@ def __main__():
     print("Hello there! What would you like to eat?")
     user_input = input()
     token = Tokenizer()
-    print(search_restaurant(user_input))
     #print(token.tokenize(user_input))
 if __name__ == "__main__":
     __main__()

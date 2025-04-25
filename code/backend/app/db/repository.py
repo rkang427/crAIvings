@@ -3,6 +3,8 @@ from sqlalchemy.orm import sessionmaker, Session
 
 from code.backend.app.model.restaurant import Restaurant
 from code.backend.app.model.restaurant_parking import Parking
+from code.backend.app.model.restaurant_category import RestaurantCategory
+from code.backend.app.model.restaurant_hours import Hours
 
 engine = create_engine('postgresql://craivings_user:password@localhost/db_craivings')
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -19,3 +21,12 @@ def fetch_restaurant(db: Session):
 
 def fetch_parking(db: Session):
     return db.query(Parking).all()
+
+def fetch_categories(db: Session):
+    return db.query(RestaurantCategory).all()
+
+def fetch_s(db: Session):
+    return db.query(RestaurantCategory).all()
+
+def fetch_hours(db: Session):
+    return db.query(Hours).all()

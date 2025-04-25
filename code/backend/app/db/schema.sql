@@ -18,10 +18,6 @@
 --  public | restaurant_music              | table | craivings_user
 --  public | restaurant_parking            | table | craivings_user
 
---for trigger
---CREATE EXTENSION IF NOT EXISTS plpgsql;
---in case pre-existing
-
 DROP TABLE IF EXISTS restaurant CASCADE;
 DROP TABLE IF EXISTS restaurant_attributes CASCADE;
 DROP TABLE IF EXISTS restaurant_hours CASCADE;
@@ -45,14 +41,12 @@ CREATE TABLE restaurant(
     longitude FLOAT NOT NULL,
     stars FLOAT NOT NULL,
     review_count INT NOT NULL,
-    is_open TEXT NOT NULL,
-    search_vector tsvector
+    is_open TEXT NOT NULL
 );
 
 CREATE TABLE restaurant_categories (
     business_id TEXT REFERENCES restaurant(id),
     category TEXT,
-    search_vector tsvector,
     PRIMARY KEY (business_id, category)
 );
 
@@ -61,7 +55,6 @@ CREATE TABLE restaurant_hours (
     day_of_week TEXT,
     open_time TIME,
     close_time TIME,
-    search_vector tsvector,
     PRIMARY KEY (business_id, day_of_week)
 );
 
@@ -97,49 +90,42 @@ CREATE TABLE restaurant_attributes(
     byob_corkage BOOLEAN,
     open_24_hours BOOLEAN,
     restaurant_counter_services BOOLEAN,
-    search_vector tsvector,
     ages_allowed TEXT
 );
 
 CREATE TABLE restaurant_best_nights(
     business_id TEXT REFERENCES restaurant(id),
     day_of_week TEXT,
-    search_vector tsvector,
     PRIMARY KEY (business_id, day_of_week)
 );
 
 CREATE TABLE restaurant_music(
     business_id TEXT REFERENCES restaurant(id),
     music TEXT,
-    search_vector tsvector,
     PRIMARY KEY (business_id, music)
 );
 
 CREATE TABLE restaurant_dietary(
     business_id TEXT REFERENCES restaurant(id),
     dietary TEXT,
-    search_vector tsvector,
     PRIMARY KEY (business_id, dietary)
 );
 
 CREATE TABLE restaurant_parking (
     business_id TEXT REFERENCES restaurant(id),
     parking_type TEXT,
-    search_vector tsvector,
     PRIMARY KEY (business_id, parking_type)
 );
 
 CREATE TABLE restaurant_ambience (
     business_id TEXT REFERENCES restaurant(id),
     vibe TEXT,
-    search_vector tsvector,
     PRIMARY KEY (business_id, vibe)
 );
 
 CREATE TABLE restaurant_good_for_meal (
     business_id TEXT REFERENCES restaurant(id),
     occasion TEXT,
-    search_vector tsvector,
     PRIMARY KEY (business_id, occasion)
 );
 
@@ -147,7 +133,6 @@ CREATE TABLE restaurant_dynamic_attributes (
     business_id TEXT REFERENCES restaurant(id),
     attribute_key TEXT,
     attribute_value JSONB,
-    search_vector tsvector,
     PRIMARY KEY (business_id, attribute_key)
 );
 
