@@ -14,4 +14,4 @@
 
 ---
 # challenges 🩹:
-- finding a way to insert/optimize data upload to the cloud without high compute/monetary cost (took me many hours :,) )
+###### finding a way to insert/optimize data upload to the cloud without high compute/monetary cost (took me many hours ☹️ )
