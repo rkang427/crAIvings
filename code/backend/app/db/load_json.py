@@ -50,7 +50,7 @@
 import json
 import os
 
-from backend.app.db.connection import connect_local
+from backend.app.db.connection import connect, connect_local
 from backend.app.db.insert_data import create_business_db
 
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../"))

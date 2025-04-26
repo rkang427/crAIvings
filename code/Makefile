@@ -39,6 +39,8 @@ local:
 
 local-db-up:
 	psql -U craivings_user -d db_craivings -f /Users/rheekang/docker_projects/crAIvings/code/backend/app/db/schema.sql
+local-db-data:
+	PYTHONPATH=/Users/rheekang/docker_projects/crAIvings/code python /Users/rheekang/docker_projects/crAIvings/code/backend/app/db/load_json.py
 
 
 
