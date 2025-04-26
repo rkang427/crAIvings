@@ -11,7 +11,8 @@ function App() {
     async function fetchRestaurantData() {
       try {
         setLoading(true);
-        const response = await axios.get('http://127.0.0.1:8000/');
+        //const response = await axios.get('http://127.0.0.1:8000/');
+        const response = await axios.get('https://craivings-backend.vercel.app/');
         setRestaurantData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -53,7 +54,7 @@ function App() {
     }
 
     try {
-      const response = await axios.get('http://127.0.0.1:8000/restaurant/recommendations', {
+      const response = await axios.get('https://craivings-backend.vercel.app/restaurant/recommendations', {
         params: { query: inputValue }
       });
 
