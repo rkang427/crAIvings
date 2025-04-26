@@ -38,7 +38,7 @@ def get_matching_category(categories, threshold=50):
     return False
 
 def create_business_db(connection, data):
-    #data = data[:1000]
+    data = data[:2000]
     try:
         with connection.cursor() as cursor:
             for business in data:

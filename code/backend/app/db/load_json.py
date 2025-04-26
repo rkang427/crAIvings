@@ -60,7 +60,7 @@ def load_and_insert_business_data():
     with open(BUSINESS_JSON_PATH, "r") as file:
         data = [json.loads(line) for line in file]
 
-    connection = connect_local()
+    connection = connect()
     if connection:
         create_business_db(connection, data)
         connection.close()
