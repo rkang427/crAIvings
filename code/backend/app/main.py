@@ -1,9 +1,21 @@
-from fastapi import FastAPI, Query, Depends
+from fastapi import APIRouter, FastAPI, HTTPException
+from pydantic import BaseModel
+from starlette.middleware.cors import CORSMiddleware
 
-from code.backend.app.controller.restaurant_controller import router as restaurant_router
+from code.backend import app
+from code.backend.app.controller.restaurant_controller import router
 
 app = FastAPI()
-app.include_router(restaurant_router, prefix="/restaurant", tags=["restaurant"])
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # React app URL
+    allow_credentials=True,
+    allow_methods=["*"],  # Allow all HTTP methods
+    allow_headers=["*"],  # Allow all headers
+)
 
-#TBD
-# app.include_router(router, prefix="/user", tags=["user"])
+app.include_router(router, prefix="/restaurant")
+
+class FoodQuery(BaseModel):
+    query: str
+

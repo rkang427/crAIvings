@@ -7,7 +7,10 @@ from code.backend.app.model.restaurant_category import RestaurantCategory
 from code.backend.app.model.restaurant_hours import Hours
 
 engine = create_engine('postgresql://craivings_user:password@localhost/db_craivings')
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+engine_neon = create_engine(
+    "postgresql://neondb_owner:npg_2Ul5ykzTcRNX@ep-round-wave-a4ppyklf-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&options=endpoint%3Dep-round-wave-a4ppyklf"
+)
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine_neon)
 
 def get_db():
     db = SessionLocal()

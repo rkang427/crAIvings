@@ -5,7 +5,7 @@ NEON="postgresql://neondb_owner:npg_2Ul5ykzTcRNX@ep-round-wave-a4ppyklf-pooler.u
 
 #http://127.0.0.1:8000/
 reload:
-	uvicorn code.backend.app.main:app --reload
+	uvicorn backend.app.main:app --reload
 
 #export local to json/csv
 csv:
@@ -17,14 +17,14 @@ import:
 
 #neon
 #psql database related shortcuts
-db-up:
+db:
+	psql $(NEON)
+
+db-new:
 	psql $(NEON) -f backend/app/db/schema.sql
 
 trigger:
 	psql $(NEON) -f backend/app/db/triggers.sql
-
-db:
-	psql $(NEON)
 
 db-data:
 	 PYTHONPATH=/Users/rheekang/docker_projects/crAIvings/code python /Users/rheekang/docker_projects/crAIvings/code/backend/app/db/load_json.py
@@ -37,10 +37,21 @@ db-size:
 local:
 	psql -U craivings_user -d db_craivings
 
-local-db-up:
+local-db-new:
 	psql -U craivings_user -d db_craivings -f /Users/rheekang/docker_projects/crAIvings/code/backend/app/db/schema.sql
+
 local-db-data:
 	PYTHONPATH=/Users/rheekang/docker_projects/crAIvings/code python /Users/rheekang/docker_projects/crAIvings/code/backend/app/db/load_json.py
+
+
+#frontend
+#npm init -y
+#npm install react react-dom react-router-dom
+#npm install axios
+
+start:
+	npm start
+
 
 
 
@@ -50,4 +61,5 @@ down:
 
 backend:
 	docker-compose build backend
+
 
