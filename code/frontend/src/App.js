@@ -6,13 +6,13 @@ function App() {
   const [restaurantData, setRestaurantData] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
+  const apiUrl = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     async function fetchRestaurantData() {
       try {
         setLoading(true);
-        //const response = await axios.get('http://127.0.0.1:8000/');
-        const response = await axios.get('https://craivings-backend.vercel.app/');
+        const response = await axios.get(`${apiUrl}/`);
         setRestaurantData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -22,7 +22,7 @@ function App() {
     }
 
     fetchRestaurantData();
-  }, []);
+  }, [apiUrl]);
 
   const formatData = (data) => {
     if (!data) {
@@ -54,7 +54,7 @@ function App() {
     }
 
     try {
-      const response = await axios.get('https://craivings-backend.vercel.app/restaurant/recommendations', {
+      const response = await axios.get(`${apiUrl}/restaurant/recommendations`, {
         params: { query: inputValue }
       });
 
