@@ -1,6 +1,9 @@
 #ignore data files due to size constraint
-code/data/raw/
-code/data/clean/
+code/data
 data/**/*.json
 data/**/*.tar
 requirements.txt
+code/backend/.env
+code/frontend/package.json
+code/frontend/package-lock.json
+.vercel
