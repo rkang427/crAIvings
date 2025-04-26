@@ -6,13 +6,13 @@ function App() {
   const [restaurantData, setRestaurantData] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const apiUrl = process.env.REACT_APP_API_URL;
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
 
   useEffect(() => {
     async function fetchRestaurantData() {
       try {
         setLoading(true);
-        const response = await axios.get(`${apiUrl}/`);
+        const response = await axios.get(`${apiUrl}/restaurant/recommendations?query=thai`);
         setRestaurantData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -22,7 +22,7 @@ function App() {
     }
 
     fetchRestaurantData();
-  }, [apiUrl]);
+  }, []);
 
   const formatData = (data) => {
     if (!data) {
@@ -32,10 +32,8 @@ function App() {
         <div key={key}>
           <strong>{parseInt(key) + 1}:<span>   </span>
             {typeof data[key] === 'object' ? data[key].name : data[key]}</strong>
-
           <br/> <strong> address: </strong>
           {typeof data[key] === 'object' ? data[key].address : data[key]}
-
           <br/> <strong> rating: </strong>
           {typeof data[key] === 'object' ? data[key].stars : data[key]}
         </div>
@@ -57,8 +55,6 @@ function App() {
       const response = await axios.get(`${apiUrl}/restaurant/recommendations`, {
         params: { query: inputValue }
       });
-
-      console.log("Data submitted successfully:", response.data);
       setRestaurantData(response.data);
     } catch (error) {
       console.error('Error submitting data:', error);

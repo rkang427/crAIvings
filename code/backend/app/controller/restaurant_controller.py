@@ -10,7 +10,7 @@ from ..db.repository import get_db
 
 router = APIRouter()
 
-@router.get("/recommendations", response_model=List[Dict])
+@router.get("/restaurant/recommendations", response_model=List[Dict])
 def search_restaurants(query: str, db: Session = Depends(get_db)):
     restaurant_service = RestaurantService()
     restaurant_presenter = RestaurantPresenter()
@@ -19,11 +19,11 @@ def search_restaurants(query: str, db: Session = Depends(get_db)):
     formatted_results = restaurant_presenter.present_search_results(results)
     #print("yay")
     return formatted_results
-
-generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
-
-@router.post("/predict/")
-async def predict(payload: dict):
-    text = payload.get("text", "")
-    result = generator(text)
-    return {"yes": result}
+#
+# generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
+#
+# @router.post("/predict/")
+# async def predict(payload: dict):
+#     text = payload.get("text", "")
+#     result = generator(text)
+#     return {"yes": result}
