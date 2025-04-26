@@ -4,6 +4,7 @@
 ### implementing what i learned in cse6400, cse6242, cse6310 🏫:
 ###### uml, eer diagrams
 ###### software architecture
+###### mvc
 ###### data visualizations - graph network
 
 ---
