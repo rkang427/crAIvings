@@ -1,5 +1,9 @@
 # crAIvings
 
+
+https://github.com/user-attachments/assets/d3e7c01d-a98a-4515-8d38-0cabb8dc0efc
+
+
 ---
 ### implementing what i learned in cse6400, cse6242, cse6310 🏫:
 ###### uml, eer diagrams
