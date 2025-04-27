@@ -2,7 +2,6 @@
 code/data
 data/**/*.json
 data/**/*.tar
-requirements.txt
 code/backend/.env
 code/frontend/package.json
 code/frontend/package-lock.json

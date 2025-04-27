@@ -17,7 +17,6 @@ def search_restaurants(query: str, db: Session = Depends(get_db)):
 
     results = restaurant_service.search_restaurant(db, query)
     formatted_results = restaurant_presenter.present_search_results(results)
-    #print("yay")
     return formatted_results
 #
 # generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')

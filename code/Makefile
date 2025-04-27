@@ -5,7 +5,8 @@ NEON="postgresql://neondb_owner:npg_2Ul5ykzTcRNX@ep-round-wave-a4ppyklf-pooler.u
 
 #http://127.0.0.1:8000/
 reload:
-	uvicorn backend.app.main:app --reload
+	uvicorn code.backend.app.main:app --reload
+
 
 #export local to json/csv
 csv:

@@ -6,13 +6,14 @@ function App() {
   const [restaurantData, setRestaurantData] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [loading, setLoading] = useState(false);
-  const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000';
+  const apiUrl = process.env.REACT_APP_API_URL || 'http://127.0.0.1:8000' || 'http://localhost:3001';
 
   useEffect(() => {
     async function fetchRestaurantData() {
       try {
         setLoading(true);
-        const response = await axios.get(`${apiUrl}/restaurant/recommendations?query=thai`);
+        const response = await axios.get(`${apiUrl}/restaurant/recommendations?query=`);
+        console.log(response.data);
         setRestaurantData(response.data);
       } catch (error) {
         console.error('Error fetching data:', error);
