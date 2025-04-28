@@ -8,7 +8,9 @@ from ..model.restaurant_hours import Hours
 
 engine = create_engine('postgresql://craivings_user:password@localhost/db_craivings')
 engine_neon = create_engine(
-    "postgresql://neondb_owner:npg_2Ul5ykzTcRNX@ep-round-wave-a4ppyklf-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require&options=endpoint%3Dep-round-wave-a4ppyklf"
+    "postgresql://neondb_owner:npg_2Ul5ykzTcRNX@ep-round-wave-a4ppyklf.us-east-1.aws.neon.tech/neondb?sslmode=require&options=endpoint%3Dep-round-wave-a4ppyklf",
+    pool_size=5,
+    max_overflow=10
 )
 
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine_neon)
