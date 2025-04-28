@@ -1,43 +1,17 @@
 {
-  "name": "craivings",
-  "version": "1.0.0",
-  "description": "",
-  "main": "src/index.js",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/rkang427/crAIvings.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/rkang427/crAIvings/issues"
-  },
-  "homepage": "https://github.com/rkang427/crAIvings#readme",
   "dependencies": {
-    "axios": "^1.9.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.3.1",
-    "react-scripts": "^5.0.1"
-  },
-  "devDependencies": {
-    "react-scripts": "^5.0.1"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
+    "@tailwindcss/postcss": "^4.1.4",
+    "autoprefixer": "^10.4.21",
+    "cors": "^2.8.5",
+    "next": "^15.3.1",
+    "postcss": "^8.5.3",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "tailwindcss": "^4.1.4"
   }
 }

@@ -13,5 +13,5 @@ __pycache__/
 .env
 *.sqlite3
 /node_modules
-frontend/.next
-frontend/.node_modules
+pages/.next
+pages/.node_modules

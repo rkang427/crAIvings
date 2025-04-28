@@ -1,4 +1,4 @@
---\i /Users/rheekang/docker_projects/crAIvings/utils/backend/app/db/schema/schema.sql
+--\i /Users/rheekang/docker_projects/crAIvings/utils/backend/pages/db/schema/schema.sql
 
 -- write above to create
 

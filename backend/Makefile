@@ -2,7 +2,7 @@ PYTHON = python3
 SCRIPT_PATH = backend/app/db/load_json.py
 PROJECT_ROOT = $(shell pwd)
 NEON="postgresql://neondb_owner:npg_2Ul5ykzTcRNX@ep-round-wave-a4ppyklf-pooler.us-east-1.aws.neon.tech/neondb?sslmode=require"
-##npx create-next-app frontend
+##npx create-next-pages pages
 #http://127.0.0.1:8000/
 reload:
 	uvicorn main:app --reload
@@ -45,7 +45,7 @@ local-db-data:
 	PYTHONPATH=/Users/rheekang/docker_projects/crAIvings/code python /Users/rheekang/docker_projects/crAIvings/code/backend/app/db/load_json.py
 
 
-#frontend
+#pages
 #npm init -y
 #npm install react react-dom react-router-dom
 #npm install axios

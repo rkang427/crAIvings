@@ -2,10 +2,10 @@
 # import os
 # import sys
 #
-# import utils.backend.app.database.connection
-# import utils.backend.app.database.insert_data
-# from utils.backend.app.database.connection import connect
-# from utils.backend.app.database.insert_data import create_business_db
+# import utils.backend.pages.database.connection
+# import utils.backend.pages.database.insert_data
+# from utils.backend.pages.database.connection import connect
+# from utils.backend.pages.database.insert_data import create_business_db
 #
 # path_business = "../../../data/raw/yelp_dataset/yelp_academic_dataset_business.json"
 # path_checkin = "../../../data/raw/yelp_dataset/yelp_academic_dataset_checkin.json"
