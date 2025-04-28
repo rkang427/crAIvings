@@ -6,3 +6,12 @@ code/backend/.env
 code/frontend/package.json
 code/frontend/package-lock.json
 .vercel
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env
+*.sqlite3
+/node_modules
+frontend/.next
+frontend/.node_modules
