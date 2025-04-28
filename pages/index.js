@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 async function fetchRestaurantData(query) {
-  const apiUrl =process.env.NEXT_PUBLIC_API_URL;
+  const apiUrl = 'https://craivings.onrender.com';
 //'https://craivings.vercel.app' || 'http://127.0.0.1:8000' || 'http://localhost:3001';
 
 
