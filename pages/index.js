@@ -1,5 +1,6 @@
 'use client';
 import {useState} from 'react';
+import {Navbar} from "./navbar";
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 async function fetchRestaurantData(query) {
@@ -61,9 +62,10 @@ export default function Home() {
   };
 
   return (
+
     <div className="flex items-center justify-center min-h-screen p-8 gap-16 sm:p-20">
       <main className="flex flex-col gap-8 items-center sm:items-start w-full max-w-xl">
-
+        <Navbar />
         <h1 className="text-3xl font-bold text-center">What food would you like to eat?</h1>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
