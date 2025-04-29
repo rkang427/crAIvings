@@ -1,11 +1,9 @@
 'use client';
 import {useState} from 'react';
-
 const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 async function fetchRestaurantData(query) {
 //'https://craivings.vercel.app' || 'http://127.0.0.1:8000' || 'http://localhost:3001';
-console.log(NEXT_PUBLIC_API_URL);
 
   try {
     const response = await fetch(`${NEXT_PUBLIC_API_URL}/recommendations/?query=${query}`);
@@ -27,7 +25,7 @@ export default function Home() {
 
   const formatData = (data) => {
     if (data.length === 0) {
-      return 'No data found';
+      return 'Sorry, recommendations coming soon!';
     }
     return data.map((item, index) => (
       <div key={index} className="p-4 border-b">
