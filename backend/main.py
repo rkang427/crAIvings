@@ -7,6 +7,7 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "https://craivings.vercel.app",
+    "localhost/:1"
 ]
 
 app.add_middleware(
