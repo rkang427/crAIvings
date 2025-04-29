@@ -14,10 +14,11 @@ router = APIRouter()
 def search_restaurants(query: str, db: Session = Depends(get_db)):
     restaurant_service = RestaurantService()
     restaurant_presenter = RestaurantPresenter()
-
     results = restaurant_service.search_restaurant(db, query)
     formatted_results = restaurant_presenter.present_search_results(results)
     return formatted_results
+
+
 #
 # generator = pipeline('text-generation', model='EleutherAI/gpt-neo-125M')
 #

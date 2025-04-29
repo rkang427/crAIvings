@@ -1,6 +1,5 @@
 from sqlalchemy import func
 from sqlalchemy.orm import Session
-
 from ..model.restaurant import Restaurant
 
 

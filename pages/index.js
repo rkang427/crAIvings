@@ -1,13 +1,14 @@
 'use client';
-import { useState } from 'react';
+import {useState} from 'react';
+
+const NEXT_PUBLIC_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 async function fetchRestaurantData(query) {
-  const apiUrl = 'https://craivings.onrender.com';
 //'https://craivings.vercel.app' || 'http://127.0.0.1:8000' || 'http://localhost:3001';
-
+console.log(NEXT_PUBLIC_API_URL);
 
   try {
-    const response = await fetch(`${apiUrl}/recommendations/?query=${query}`);
+    const response = await fetch(`${NEXT_PUBLIC_API_URL}/recommendations/?query=${query}`);
     console.log(response);
     if (!response.ok) {
       throw new Error(`Failed to fetch data: ${response.statusText}`);
@@ -24,9 +25,8 @@ export default function Home() {
   const [inputValue, setInputValue] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Format the restaurant data into a readable format
   const formatData = (data) => {
-    if (!data) {
+    if (data.length === 0) {
       return 'No data found';
     }
     return data.map((item, index) => (
@@ -40,12 +40,10 @@ export default function Home() {
     ));
   };
 
-  // Handle input change
   const handleInputChange = (event) => {
     setInputValue(event.target.value);
   };
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!inputValue) {
@@ -65,7 +63,7 @@ export default function Home() {
   };
 
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 gap-16 sm:p-20">
+    <div className="flex items-center justify-center min-h-screen p-8 gap-16 sm:p-20">
       <main className="flex flex-col gap-8 items-center sm:items-start w-full max-w-xl">
 
         <h1 className="text-3xl font-bold text-center">What food would you like to eat?</h1>
