@@ -13,7 +13,7 @@ https://github.com/user-attachments/assets/d3e7c01d-a98a-4515-8d38-0cabb8dc0efc
 
 ---
 ### tech stack:
-###### neon, heroku, postgreSQL, sqlAlchemy
+###### neon, postgreSQL, sqlAlchemy
 ###### pydantic, fastAPI, python
 ###### React.js, Next.js
 
